@@ -15,8 +15,9 @@ public class Main {
         Printable printable = new Printable() {
             @Override
             public void print(List<Weapon> weapons) {
+                System.out.println("----------------------------------------------------------------------------------------------------------------------------------------------------");
                 weapons.forEach((Weapon weapon) -> System.out.println(String.format("|%20s|", weapon.getName()) + String.format("%20s|", weapon.getCombatType().toString()) + String.format("%20s|", weapon.getDamageType().toString()) + String.format("%20d|", weapon.getDamage()) + String.format("%20d|", weapon.getSpeed()) + String.format("%20d|", weapon.getStrength()) + String.format("%20d|", weapon.getValue())));
-                System.out.println("--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------");
+                System.out.println("----------------------------------------------------------------------------------------------------------------------------------------------------");
             }
         };
         printable.print(weapons);
