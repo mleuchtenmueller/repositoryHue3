@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.concurrent.atomic.AtomicInteger;
+import java.util.concurrent.atomic.AtomicLong;
 
 public class Streams {
 
@@ -17,14 +19,14 @@ public class Streams {
 
     public List<String> upperCase(String[] strings) {
         List<String> upperCase_Strings = new ArrayList<>();
-        for (int i = 0; i < strings.length; i++) {
-            upperCase_Strings.add(strings[i].toUpperCase());
+        for (String string : strings) {
+            upperCase_Strings.add(string.toUpperCase());
         }
         return upperCase_Strings;
     }
 
     public Weapon findWeaponWithLowestDamage(List<Weapon> weapons) {
-        if (weapons.size() == 0) {
+        if (weapons.isEmpty()) {
             return null;
         }
         Weapon lowestDamageWeapon = weapons.get(0);
@@ -39,16 +41,16 @@ public class Streams {
     }
 
     public Weapon findWeaponWithLowestDamageStream(List<Weapon> weapons) {
-        Weapon lowestDamageWeapon = null;
+        Weapon[] lowestDamageWeapon = {weapons.get(0)};
         weapons.forEach(name -> {
-            if((name.getDamage()) <= lowestDamageWeapon.getDamage()) lowestDamageWeapon = name;
+            if((name.getDamage()) <= lowestDamageWeapon[0].getDamage()) lowestDamageWeapon[0] = name;
         });
-        return lowestDamageWeapon;
+        return lowestDamageWeapon[0];
     }
 
     public Weapon findWeaponWithHighestStrength(List<Weapon> weapons) {
 
-        if (weapons.size() == 0) {
+        if (weapons.isEmpty()) {
             return null;
         }
         int highestStrength = weapons.get(0).getMinStrength();
@@ -63,11 +65,11 @@ public class Streams {
     }
 
     public Weapon findWeaponWithHighestStrengthStream(List<Weapon> weapons) {
-        Weapon highestStrengtWeapon = null;
+        Weapon[] highestStrengtWeapon = {null};
         weapons.forEach(name -> {
-            if((name.getMinStrength()) >= highestStrengtWeapon.getMinStrength()) highestStrengtWeapon = name;
+            if((name.getMinStrength()) >= highestStrengtWeapon[0].getMinStrength()) highestStrengtWeapon[0] = name;
         });
-        return highestStrengtWeapon;
+        return highestStrengtWeapon[0];
     }
 
     public List<Weapon> collectMissileWeapons(List<Weapon> weapons) {
@@ -91,7 +93,7 @@ public class Streams {
     public Weapon findWeaponWithLongestName(List<Weapon> weapons) {
         int maxNumberOfChar = 0;
         Weapon longestNamedWeapon = null;
-        if (weapons.size() == 0) {
+        if (weapons.isEmpty()) {
             return null;
         } else if (weapons.get(0).getName() == null) {
             longestNamedWeapon = weapons.get(0);
@@ -107,11 +109,11 @@ public class Streams {
     }
 
     public Weapon findWeaponWithLongestNameStream(List<Weapon> weapons) {
-        Weapon longestName = null;
+        Weapon[] weaponWithlongestName = {weapons.get(0)};
         weapons.forEach(name -> {
-            if((name.getName()).length() >= longestName.getName().length()) longestName = name;
+            if((name.getName()).length() >= weaponWithlongestName[0].getName().length()) weaponWithlongestName[0] = name;
         });
-        return longestName;
+        return weaponWithlongestName[0];
     }
 
     public List<String> toNameList(List<Weapon> weapons) {
@@ -138,12 +140,12 @@ public class Streams {
         return speedArray;
     }
 
-    public int[] toSpeedArrayStream(List<Weapon> weapons) {
-        int[] speeds = new int[weapons.size()];
-        int i = 0;
+    public AtomicInteger[] toSpeedArrayStream(List<Weapon> weapons) {
+        AtomicInteger[] speeds = new AtomicInteger[weapons.size()];
+        AtomicInteger i = new AtomicInteger(0);
         weapons.forEach(name -> {
-            speeds[i] = (name.getSpeed());
-            i++;
+            speeds[i.intValue()] = (new AtomicInteger(name.getSpeed()));
+            i.set(i.intValue()+1);
         });
         return speeds;
     }
@@ -157,11 +159,11 @@ public class Streams {
     }
 
     public int sumUpValuesStream(List<Weapon> weapons) {
-        int valueSum = 0;
+        AtomicInteger valueSum = new AtomicInteger(0);
         weapons.forEach(name -> {
-            valueSum += name.getValue();
+            valueSum.set(valueSum.intValue() + name.getValue());
         });
-        return valueSum;
+        return valueSum.intValue();
     }
 
     public long sumUpHashCodes(List<Weapon> weapons) {
@@ -173,11 +175,11 @@ public class Streams {
     }
 
     public long sumUpHashCodesStream(List<Weapon> weapons) {
-        long hashCodeSum = 0;
+        AtomicLong hashCodeSum = new AtomicLong(0);
         weapons.forEach(name -> {
-        hashCodeSum += name.hashCode();
+        hashCodeSum.set(hashCodeSum.longValue() + name.hashCode());
         });
-        return hashCodeSum;
+        return hashCodeSum.longValue();
     }
 
     public List<Weapon> removeDuplicates(List<Weapon> weapons) {

@@ -3,7 +3,6 @@ package hue3;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
-import java.util.Comparator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -27,15 +26,9 @@ public class Reader {
                 Integer.parseInt(s[4]),
                 Integer.parseInt(s[5]),
                 Integer.parseInt(s[6])
-        ))
-                .collect(Collectors.toList());
+        )).collect(Collectors.toList());
 
-        weapons.sort(new Comparator<Weapon>() {
-            @Override
-            public int compare(Weapon o1, Weapon o2) {
-                return Integer.compare(o1.getDamage(), o2.getDamage());
-            }
-        });
+        weapons.sort((Weapon o1, Weapon o2) -> Integer.compare(o1.getDamage(), o2.getDamage()));
 
         weapons.sort((Weapon a, Weapon b) -> {
             if (b.getCombatType().compareTo(a.getCombatType()) == 0) {
@@ -48,32 +41,37 @@ public class Reader {
                 return b.getCombatType().compareTo(a.getCombatType());
             }
         });
-
         return weapons;
     }
 
     public CombatType toCombatType(String s) {
-        if (s.equals("MELEE")) {
-            return CombatType.MELEE;
-        } else if (s.equals("RANGED")) {
-            return CombatType.RANGED;
-        } else if (s.equals("NONE")) {
-            return CombatType.NONE;
+        switch (s) {
+            case "MELEE":
+                return CombatType.MELEE;
+            case "RANGED":
+                return CombatType.RANGED;
+            case "NONE":
+                return CombatType.NONE;
+            default:
+                break;
         }
         return null;
     }
 
     public DamageType toDamageType(String s) {
-        if (s.equals("SLASHING")) {
-            return DamageType.SLASHING;
-        } else if (s.equals("MISSILE")) {
-            return DamageType.MISSILE;
-        } else if (s.equals("BLUNT")) {
-            return DamageType.BLUNT;
-        } else if (s.equals("PIERCING")) {
-            return DamageType.PIERCING;
-        } else if (s.equals("NONE")) {
-            return DamageType.NONE;
+        switch (s) {
+            case "SLASHING":
+                return DamageType.SLASHING;
+            case "MISSILE":
+                return DamageType.MISSILE;
+            case "BLUNT":
+                return DamageType.BLUNT;
+            case "PIERCING":
+                return DamageType.PIERCING;
+            case "NONE":
+                return DamageType.NONE;
+            default:
+                break;
         }
         return null;
     }

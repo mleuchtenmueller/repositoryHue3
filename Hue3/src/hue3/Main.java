@@ -1,13 +1,14 @@
 package hue3;
 
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.List;
 
 /**
  *
  * @author Moritz Leuchtenmüller
  */
-public class Main {
+public class Main{
 
     public static void main(String[] args) throws IOException {
         Reader reader = new Reader();
@@ -21,5 +22,13 @@ public class Main {
             }
         };
         printable.print(weapons);
+        //Test Mapper
+        final List <String> names = Arrays.asList("Tim" , "Andi " , "Michael " ) ;
+        final Mapper<String, Integer> intMapper = String::length;
+        System.out.println(intMapper.mapAll(names));
+        final Mapper<String, String> stringMapper = (s) -> {String t = s;
+        return t;};
+        final List<String> uppercaseNames = stringMapper.mapAll(names) ;
+        System.out.println(uppercaseNames);
     }
 }
